@@ -9,6 +9,8 @@ fetch("https://striveschool-api.herokuapp.com/api/product/", {
   .then((response) => {
     if (response.ok) {
       return response.json();
+    } else {
+      console.log("dove sono i dati");
     }
   })
   .then((products) => {

@@ -84,7 +84,7 @@ if (eventId) {
     })
       .then((response) => {
         if (response.ok) {
-          console.log("SUCCESS!");
+          window.location.assign("./index.html");
         }
       })
       .catch((err) => console.log(err));
