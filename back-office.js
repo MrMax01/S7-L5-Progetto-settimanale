@@ -1,28 +1,43 @@
 const eventId = new URLSearchParams(window.location.search).get("eventId");
+
 if (eventId) {
   const btnAdd = document.getElementById("add");
   btnAdd.innerText = "Modifica";
   btnAdd.setAttribute("disabled", "");
-
-  fetch("https://striveschool-api.herokuapp.com/api/product/" + eventId, {
-    headers: {
-      Authorization:
-        "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGU4NjkxOTEwYmNhMDAwMTQ1ODQwMTMiLCJpYXQiOjE2OTI5NTMzNDQsImV4cCI6MTY5NDE2Mjk0NH0.Vqq2KoBSxfnpNDdf5M-LAVWlmj4K2HJoEG6mY1n5Hsk",
-    },
-  })
-    .then((response) => response.json())
-    .then((product) => {
-      document.getElementById("name").value = product.name;
-      document.getElementById("description").value = product.description;
-      document.getElementById("imageUrl").value = product.imageUrl;
-      document.getElementById("brand").value = product.brand;
-      document.getElementById("price").value = product.price;
-
-      btnAdd.removeAttribute("disabled");
-
-      /*METTO IN ASCOLTO */
+  const myForm = document.getElementById("my-form");
+  /*CREO UN BOTTONE RESET */
+  const resetBtn = document.createElement("button");
+  resetBtn.innerText = "Reset";
+  resetBtn.setAttribute("type", "button");
+  resetBtn.setAttribute("disabled", "");
+  myForm.appendChild(resetBtn);
+  const reset = () => {
+    fetch("https://striveschool-api.herokuapp.com/api/product/" + eventId, {
+      headers: {
+        Authorization:
+          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGU4NjkxOTEwYmNhMDAwMTQ1ODQwMTMiLCJpYXQiOjE2OTI5NTMzNDQsImV4cCI6MTY5NDE2Mjk0NH0.Vqq2KoBSxfnpNDdf5M-LAVWlmj4K2HJoEG6mY1n5Hsk",
+      },
     })
-    .catch((error) => console.log(error));
+      .then((response) => response.json())
+      .then((product) => {
+        document.getElementById("name").value = product.name;
+        document.getElementById("description").value = product.description;
+        document.getElementById("imageUrl").value = product.imageUrl;
+        document.getElementById("brand").value = product.brand;
+        document.getElementById("price").value = product.price;
+
+        btnAdd.removeAttribute("disabled");
+        resetBtn.removeAttribute("disabled");
+
+        /*METTO IN ASCOLTO */
+      })
+      .catch((error) => console.log(error));
+  };
+
+  reset();
+  resetBtn.addEventListener("click", () => {
+    reset();
+  });
 
   btnAdd.addEventListener("click", (event) => {
     event.preventDefault();
